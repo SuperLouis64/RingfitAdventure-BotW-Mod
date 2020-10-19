@@ -1,4 +1,4 @@
-# Ringfit-BotW
+# Ring Fit Adventure Mod for BotW
 Using a Ring Fit Adventure mod for The Legend of Zelda: Breath of the Wild! This allows the user to attempt to play BotW on the switch with IRL exercies. Run to move in-game, squat to use the menus! What can go wrong? If you end up using the mod for YouTube, Twitch, etc, all I ask is to be credited, don't be a jerk about it. Hit me up at <https://twitter.com/SuperLouis_64>
 
 ### Overall Design of the Mod
