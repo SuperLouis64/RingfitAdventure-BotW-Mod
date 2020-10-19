@@ -1,0 +1,174 @@
+#pragma METAINFO("NoRingBotW", 1, 0, "Super_Louis64")
+
+
+/*
+Ring Fit mod for BotW
+Made by Super Louis 64
+(@SuperLouis_64 on twitter)
+
+*/
+
+
+bool controllerON;
+bool isRunning;
+bool isSquat;
+
+
+int runCheck;
+
+init
+{
+	controllerON = FALSE;
+	isRunning = FALSE;
+	isSquat = FALSE;
+	// remap sticks so you can use the right joycon to move
+	remapper_swap(STICK_2_X, STICK_1_X);
+	remapper_swap(STICK_2_Y, STICK_1_Y);
+	runCheck = 0;
+}
+
+
+
+main 
+{
+			
+	nowRunning();
+			
+// swing to attake(noringcon)
+	if(get_val(GYRO_1_Z) < -80.0)
+		{
+			set_val(BUTTON_17, 100.0);
+			//set_val(BUTTON_15, 0.0);
+		}
+		
+// swing with ringcon
+	if(get_val(GYRO_1_X) > 50.0)
+		{
+			set_val(BUTTON_17, 100.0);
+		}
+
+// lockon with ZR
+	if(get_val(BUTTON_5) > 0.0)
+		{
+			set_val(BUTTON_8, 100.0);
+			set_val(BUTTON_5, 0.0);
+		}
+	
+
+// Turn R into bow ZR
+	if(get_val(BUTTON_4) > 0.0)
+		{
+			set_val(BUTTON_5, 100.0);
+			set_val(BUTTON_4, 0.0);
+		}
+
+
+if(get_val(BUTTON_16) > 0.0)
+		{
+			set_val(BUTTON_16, 0.0);
+			set_val(BUTTON_14, 100.0);
+		}
+
+// run with left STICK button press
+	if(get_val(BUTTON_6) > 0.0)
+		{
+			set_val(BUTTON_6, 0.0);
+			set_val(BUTTON_16, 100.0);
+		}
+		
+// hand over head
+	// if(get_val(ACCEL_2_Z) > 18.0 && get_val(GYRO_1_Z) < 5.0 && get_val(GYRO_1_Y) < 5.0 && get_val(BUTTON_5) < 100.0)
+	if(get_val(BUTTON_1) > 0.0)
+		{
+			set_val(BUTTON_1, 0.0);
+			if(check_release(BUTTON_19, 600))
+				{
+					set_val(BUTTON_7, 100);
+				}
+		}
+
+
+/*turn off buttons if i'm not running
+70 is a magic number that sets a pace for the user to be running at for 
+the controller's joystick to be activated
+increase if you want to run harder, decrease if you want to run less
+*/
+	if(runCheck < 70)
+		{
+			set_val(STICK_2_X, 0.0);
+			set_val(STICK_2_Y, 0.0);
+			
+		}
+	
+	
+
+// ACCEL_1_Z = -25.00 = squats + Plus = start menu
+	if(get_val(ACCEL_1_Z) < -16.00 && get_val(BUTTON_3) == 100.0)
+		{
+			set_val(BUTTON_3, 100.0);
+			//set_val(BUTTON_8, 100.0);
+			isSquat = TRUE;
+		}
+	else
+		{
+			if(check_release(BUTTON_3, 600))
+				{
+					isSquat = FALSE;
+				}
+			if(isSquat == FALSE)
+				{
+					set_val(BUTTON_3, 0.0);	
+				}
+		}
+		
+/* turn off R so you can squat 
+	if(get_val(BUTTON_4) > 0.0 && get_val(ACCEL_1_Z) != -25.00)
+		{
+			set_val(BUTTON_4, 0.0);
+		}	
+	
+*/
+
+
+// ACCEL_1_Y > -20.00 = squats + HOME = Press Button 7
+	if(get_val(ACCEL_1_Y) > -20.00 && get_val(BUTTON_1) == 100.0)
+		{
+			set_val(BUTTON_1, 0.0);
+			set_val(BUTTON_7, 100.0);
+		}	
+		
+
+
+	
+// resets variable if it goes under 0
+	if(runCheck <0)
+		{
+			runCheck = 0;
+		}
+
+//debug();
+
+}
+
+// the command to let me do things only if I'm running
+// This function checks if the joycons are shaking in your legstrap due to running
+void nowRunning()
+{
+	if(get_val(ACCEL_1_Y) < -30.6)
+		{
+			runCheck = 100;	
+				
+		}
+	if(get_val(ACCEL_1_Y) < -23.8 && get_val(ACCEL_1_Y) > -24.6)
+		{
+			runCheck--;
+		}
+
+}
+
+
+void debug()
+{
+	printf("%d", runCheck);
+	
+}
